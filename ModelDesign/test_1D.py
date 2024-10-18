@@ -75,7 +75,7 @@ if __name__ == '__main__':
     argparser = argparse.ArgumentParser()
     argparser.add_argument('--cuda', type=int, default=0)
     argparser.add_argument('--size', type=int, default=1250)
-    argparser.add_argument('--path_data', type=str, default='../../data/tinyml_contest_data_training/')
+    argparser.add_argument('--path_data', type=str, default='../../../Summer24/tinyml_contest_data_training/')
     argparser.add_argument('--net_name', type=str, default='IEGM_net.pkl')
     argparser.add_argument('--path_indices', type=str, default='./data_indices/')
     argparser.add_argument('--batch_size', '-b', metavar='B', type=int, default=1, help='Batch size')

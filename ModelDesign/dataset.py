@@ -32,7 +32,7 @@ def loadCSV(csvf):
 def txt_to_numpy(filename, row):
     file = open(filename)
     lines = file.readlines()
-    datamat = np.arange(row, dtype=np.float)
+    datamat = np.arange(row, dtype=float) #PD edit - was np.float for dtype which was deprecated
     row_count = 0
     for line in lines:
         line = line.strip().split(' ')
