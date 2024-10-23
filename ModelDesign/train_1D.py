@@ -263,7 +263,7 @@ if __name__ == '__main__':
     parser.add_argument('--lr', type=float, default=0.0001, help='learning rate', )
     parser.add_argument('--batchsz', type=int, default=32, help='total batchsz for train')
     parser.add_argument('--size', type=int, default=1250)
-    parser.add_argument('--path_data', type=str, default='../../data/tinyml_contest_data_training/')
+    parser.add_argument('--path_data', type=str, default='../../tinyml_contest_data_training/')
     parser.add_argument('--path_indices', type=str, default='./data_indices/')
     parser.add_argument('--ext', type=str, default='', help='save extension')
     parser.add_argument('--enable-wandb', action='store_true', default=False,
