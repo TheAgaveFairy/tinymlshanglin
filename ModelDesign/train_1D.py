@@ -11,7 +11,8 @@ from help_code_demo import *
 from loss import F1_Loss, Fbeta_Loss
 from dataset import IEGMDataset_tfm
 from models.model_1 import *
-from sklearn.metrics import confusion_matrix
+from sklearn.metrics import confusion_matrix, accuracy_score, classification_report # latter two added by PD
+#import time # paul
 
 try:
     import wandb
@@ -38,7 +39,13 @@ def main():
 
     # Instantiating NN
     net = IEGMNetSimple5a()
-    net = net.float().to(device)
+    net = net.float()#.to(device) #now setting up for multi GPU, see next code block
+    
+    if use_cuda and torch.cuda.device_count() > 1 and False: # no need, it's not any faster. not shocked.
+        print("Using",str(torch.cuda.device_count()),"GPUs")
+        net = nn.DataParallel(net)
+    net.to(device)
+
 
     print(net)
     for name, W in net.named_parameters():
@@ -71,8 +78,8 @@ def main():
                             mode='test',
                             size=SIZE)
 
-    trainloader = DataLoader(trainset, batch_size=BATCH_SIZE, shuffle=True, num_workers=4)
-    testloader = DataLoader(testset, batch_size=BATCH_SIZE_TEST, shuffle=True, num_workers=4)
+    trainloader = DataLoader(trainset, batch_size=BATCH_SIZE, shuffle=True, num_workers=8)      #upped number of workers to 8 from 4
+    testloader = DataLoader(testset, batch_size=BATCH_SIZE_TEST, shuffle=True, num_workers=8)   #upped number of workers to 8 from 4
 
     print("Training Dataset loading finish.")
 
@@ -104,6 +111,11 @@ def main():
         net.train()
         running_loss = 0.0
         true_label, pred_label = [], []
+        
+        # alloc = torch.cuda.memory_allocated() / 1e9
+        # reserved = torch.cuda.memory_reserved() / 1e9
+        # print("GPU Memory Allocated", alloc, "GB")
+        # print("GPU Memory Reserved", reserved, "GB")
 
         for j, data in enumerate(trainloader, 0):
             inputs, labels = data['IEGM_seg'], data['label']
@@ -122,24 +134,38 @@ def main():
 
             true_label.extend(labels.detach().cpu().numpy())
             pred_label.extend(predicted.detach().cpu().numpy())
-
+        
         C = confusion_matrix(true_label, pred_label)
+        """ OLD BINARY, NOW MORE ROBUST
         acc = (C[0][0] + C[1][1]) / (C[0][0] + C[0][1] + C[1][0] + C[1][1])
         precision = C[1][1] / (C[1][1] + C[0][1])
         recall = C[1][1] / (C[1][1] + C[1][0])
+        """
+        acc = np.diag(C).sum() / C.sum()
+        true_pos = np.diag(C)
+        false_pos = np.sum(C, axis=0) - true_pos
+        false_neg = np.sum(C, axis=1) - true_pos
+        precision = np.sum(true_pos / (true_pos + false_pos))
+        recall = np.sum(true_pos / (true_pos + false_neg))
         f1_score = (2 * precision * recall) / (precision + recall)
         fb_score = (1+2**2) * (precision * recall) / ((2**2)*precision + recall)
+        
 
-        if has_wandb and args.enable_wandb:
+        target_names = ['AFb', 'AFt', 'SR', 'SVT', 'VFb', 'VFt', 'VPD', 'VT']
+        skl_acc = accuracy_score(np.array(true_label), np.array(pred_label), normalize=True)
+        print("Epoch: ", epoch)
+        print(skl_acc)        
+
+        if has_wandb and args.enable_wandb and False: # turn this off
             wandb.log({"train/acc": acc.item()})
             wandb.log({"train/precision": precision.item()})
             wandb.log({"train/recall": recall.item()})
             wandb.log({"train/f1_score": f1_score.item()})
             wandb.log({"train/fb_score": fb_score.item()})
 
-        print('Epoch %d \nTrain Acc: %.5f Train loss: %.5f' %
-              (epoch + 1, acc, running_loss / len(trainloader.dataset)))
-        print("precision: {:.5f}, recall: {:.5f}, F1_score: {:.5f}, Fb_score: {:.5f}".format(precision, recall, f1_score, fb_score))
+        #print('Epoch %d \nTrain Acc: %.5f Train loss: %.5f' %
+              #(epoch + 1, acc, running_loss / len(trainloader.dataset)))
+        #print("precision: {:.5f}, recall: {:.5f}, F1_score: {:.5f}, Fb_score: {:.5f}".format(precision, recall, f1_score, fb_score))
 
         Train_loss.append(running_loss / len(trainloader.dataset))
         Train_acc.append(acc.item())
@@ -176,11 +202,22 @@ def main():
                 pred_label_test.extend(predicted_test.detach().cpu().numpy())
 
         test_C = confusion_matrix(true_label_test, pred_label_test)
+        test_acc = np.diag(test_C).sum() / test_C.sum()
+        test_true_pos = np.diag(test_C)
+        test_false_pos = np.sum(test_C, axis=0) - test_true_pos
+        test_false_neg = np.sum(test_C, axis=1) - test_true_pos
+        test_precision = np.sum(test_true_pos / (test_true_pos + test_false_pos))
+        test_recall = np.sum(test_true_pos / (test_true_pos + test_false_neg))
+        test_f1_score = (2 * test_precision * test_recall) / (test_precision + test_recall)
+        test_fb_score = (1+2**2) * (test_precision * test_recall) / ((2**2)*test_precision + test_recall)
+        
+        """
         test_acc = (test_C[0][0] + test_C[1][1]) / (test_C[0][0] + test_C[0][1] + test_C[1][0] + test_C[1][1])
         test_precision = test_C[1][1] / (test_C[1][1] + test_C[0][1])
         test_recall = test_C[1][1] / (test_C[1][1] + test_C[1][0])
         test_f1_score = (2 * test_precision * test_recall) / (test_precision + test_recall)
         test_fb_score = (1+2**2) * (test_precision * test_recall) / ((2**2)*test_precision + test_recall)
+        """
 
         if has_wandb and args.enable_wandb:
             wandb.log({"test/acc": test_acc.item()})

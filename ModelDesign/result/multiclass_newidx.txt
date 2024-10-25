@@ -1,0 +1,319 @@
+device is -------------- cuda
+IEGMNetSimple5a(
+  (conv1): Sequential(
+    (0): Conv2d(1, 2, kernel_size=(6, 1), stride=(2, 1))
+    (1): ReLU(inplace=True)
+    (2): BatchNorm2d(2, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+  )
+  (conv2): Sequential(
+    (0): Conv2d(2, 3, kernel_size=(5, 1), stride=(2, 1))
+    (1): ReLU(inplace=True)
+    (2): BatchNorm2d(3, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+  )
+  (conv3): Sequential(
+    (0): Conv2d(3, 5, kernel_size=(4, 1), stride=(2, 1))
+    (1): ReLU(inplace=True)
+    (2): BatchNorm2d(5, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+  )
+  (conv4): Sequential(
+    (0): Conv2d(5, 10, kernel_size=(4, 1), stride=(2, 1))
+    (1): ReLU(inplace=True)
+    (2): BatchNorm2d(10, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+  )
+  (conv5): Sequential(
+    (0): Conv2d(10, 10, kernel_size=(4, 1), stride=(2, 1))
+    (1): ReLU(inplace=True)
+    (2): BatchNorm2d(10, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+  )
+  (linear): Linear(in_features=370, out_features=8, bias=True)
+)
+conv1.0.weight torch.Size([2, 1, 6, 1])
+conv1.0.bias torch.Size([2])
+conv1.2.weight torch.Size([2])
+conv1.2.bias torch.Size([2])
+conv2.0.weight torch.Size([3, 2, 5, 1])
+conv2.0.bias torch.Size([3])
+conv2.2.weight torch.Size([3])
+conv2.2.bias torch.Size([3])
+conv3.0.weight torch.Size([5, 3, 4, 1])
+conv3.0.bias torch.Size([5])
+conv3.2.weight torch.Size([5])
+conv3.2.bias torch.Size([5])
+conv4.0.weight torch.Size([10, 5, 4, 1])
+conv4.0.bias torch.Size([10])
+conv4.2.weight torch.Size([10])
+conv4.2.bias torch.Size([10])
+conv5.0.weight torch.Size([10, 10, 4, 1])
+conv5.0.bias torch.Size([10])
+conv5.2.weight torch.Size([10])
+conv5.2.bias torch.Size([10])
+linear.weight torch.Size([8, 370])
+linear.bias torch.Size([8])
+Training Dataset loading finish.
+Start training
+Epoch:  0
+0.6119354838709677
+Test || Loss:0.00682 Acc: 0.60872
+        Precision: nan Recall: 1.61871 F1: nan FB: nan 
+Epoch:  1
+0.6768548387096774
+Test || Loss:0.00725 Acc: 0.62054
+        Precision: nan Recall: 2.11399 F1: nan FB: nan 
+Epoch:  2
+0.6958870967741936
+Test || Loss:0.00621 Acc: 0.66396
+        Precision: nan Recall: 2.43718 F1: nan FB: nan 
+Epoch:  3
+0.6991532258064516
+Test || Loss:0.00574 Acc: 0.64788
+        Precision: nan Recall: 3.09770 F1: nan FB: nan 
+Epoch:  4
+0.7112903225806452
+Test || Loss:0.00530 Acc: 0.68225
+        Precision: nan Recall: 2.45067 F1: nan FB: nan 
+Epoch:  5
+0.7233064516129032
+Test || Loss:0.00557 Acc: 0.67855
+        Precision: 2.41062 Recall: 2.29238 F1: 2.35001 FB: 2.31509 
+Epoch:  6
+0.7326209677419355
+Test || Loss:0.00789 Acc: 0.65232
+        Precision: nan Recall: 2.92222 F1: nan FB: nan 
+Epoch:  7
+0.7368548387096774
+Test || Loss:0.00597 Acc: 0.66433
+        Precision: 3.05086 Recall: 2.73464 F1: 2.88411 FB: 2.79252 
+Epoch:  8
+0.743508064516129
+Test || Loss:0.00805 Acc: 0.63163
+        Precision: nan Recall: 3.06606 F1: nan FB: nan 
+Epoch:  9
+0.7505645161290323
+Test || Loss:0.00595 Acc: 0.70589
+        Precision: nan Recall: 2.92962 F1: nan FB: nan 
+Epoch:  10
+0.7540725806451613
+Test || Loss:0.00658 Acc: 0.59856
+        Precision: nan Recall: 2.48849 F1: nan FB: nan 
+Epoch:  11
+0.7516935483870968
+Test || Loss:0.00726 Acc: 0.66137
+        Precision: nan Recall: 3.20199 F1: nan FB: nan 
+Epoch:  12
+0.7543145161290322
+Test || Loss:0.00617 Acc: 0.72215
+        Precision: nan Recall: 2.86707 F1: nan FB: nan 
+Epoch:  13
+0.7628629032258064
+Test || Loss:0.00711 Acc: 0.68760
+        Precision: nan Recall: 3.13260 F1: nan FB: nan 
+Epoch:  14
+0.7618145161290323
+Test || Loss:0.00729 Acc: 0.66229
+        Precision: nan Recall: 2.74805 F1: nan FB: nan 
+Epoch:  15
+0.76125
+Test || Loss:0.00864 Acc: 0.43192
+        Precision: nan Recall: 1.98892 F1: nan FB: nan 
+Epoch:  16
+0.7617338709677419
+Test || Loss:0.00785 Acc: 0.55330
+        Precision: nan Recall: 2.49205 F1: nan FB: nan 
+Epoch:  17
+0.7658467741935484
+Test || Loss:0.00637 Acc: 0.71698
+        Precision: nan Recall: 2.82936 F1: nan FB: nan 
+Epoch:  18
+0.7631451612903226
+Test || Loss:0.00655 Acc: 0.73268
+        Precision: nan Recall: 2.85889 F1: nan FB: nan 
+Epoch:  19
+0.7723387096774194
+Test || Loss:0.00694 Acc: 0.71347
+        Precision: 2.85061 Recall: 3.02824 F1: 2.93674 FB: 2.99097 
+Epoch:  20
+0.7659274193548387
+Test || Loss:0.01143 Acc: 0.38408
+        Precision: nan Recall: 2.52756 F1: nan FB: nan 
+Epoch:  21
+0.774758064516129
+Test || Loss:0.00662 Acc: 0.73194
+        Precision: nan Recall: 3.05017 F1: nan FB: nan 
+Epoch:  22
+0.7773790322580645
+Test || Loss:0.00708 Acc: 0.73194
+        Precision: 2.84572 Recall: 2.97567 F1: 2.90925 FB: 2.94874 
+Epoch:  23
+0.7752822580645161
+Test || Loss:0.00742 Acc: 0.74395
+        Precision: nan Recall: 2.96989 F1: nan FB: nan 
+Epoch:  24
+0.7781451612903226
+Test || Loss:0.00866 Acc: 0.70312
+        Precision: nan Recall: 3.14156 F1: nan FB: nan 
+Epoch:  25
+0.7740725806451613
+Test || Loss:0.00666 Acc: 0.72234
+        Precision: nan Recall: 2.93253 F1: nan FB: nan 
+Epoch:  26
+0.7795564516129032
+Test || Loss:0.00806 Acc: 0.69832
+        Precision: nan Recall: 2.87318 F1: nan FB: nan 
+Epoch:  27
+0.7815725806451613
+Test || Loss:0.00730 Acc: 0.70460
+        Precision: 2.95896 Recall: 3.08770 F1: 3.02196 FB: 3.06106 
+Epoch:  28
+0.7806854838709677
+Test || Loss:0.00754 Acc: 0.68594
+        Precision: nan Recall: 2.92709 F1: nan FB: nan 
+Epoch:  29
+0.7779032258064517
+Test || Loss:0.00689 Acc: 0.72917
+        Precision: 2.89364 Recall: 3.22333 F1: 3.04960 FB: 3.15151 
+Epoch:  30
+0.7783870967741936
+Test || Loss:0.00760 Acc: 0.72492
+        Precision: 2.89032 Recall: 3.29851 F1: 3.08095 FB: 3.20790 
+Epoch:  31
+0.7854032258064516
+Test || Loss:0.00804 Acc: 0.71661
+        Precision: 2.97553 Recall: 2.91578 F1: 2.94535 FB: 2.92753 
+Epoch:  32
+0.7806854838709677
+Test || Loss:0.01120 Acc: 0.66968
+        Precision: nan Recall: 3.09446 F1: nan FB: nan 
+Epoch:  33
+0.7830645161290323
+Test || Loss:0.00726 Acc: 0.73379
+        Precision: nan Recall: 3.13196 F1: nan FB: nan 
+Epoch:  34
+0.7827822580645162
+Test || Loss:0.00718 Acc: 0.70460
+        Precision: 3.05709 Recall: 3.05933 F1: 3.05821 FB: 3.05888 
+Epoch:  35
+0.7821774193548388
+Test || Loss:0.00719 Acc: 0.70220
+        Precision: 3.11731 Recall: 2.83060 F1: 2.96704 FB: 2.88364 
+Epoch:  36
+0.7816532258064516
+Test || Loss:0.00807 Acc: 0.72067
+        Precision: nan Recall: 3.20029 F1: nan FB: nan 
+Epoch:  37
+0.7885887096774193
+Test || Loss:0.00827 Acc: 0.65490
+        Precision: 2.92363 Recall: 3.08175 F1: 3.00061 FB: 3.04877 
+Epoch:  38
+0.7821370967741935
+Test || Loss:0.00802 Acc: 0.69056
+        Precision: 2.97449 Recall: 2.89905 F1: 2.93628 FB: 2.91383 
+Epoch:  39
+0.7847580645161291
+Test || Loss:0.00822 Acc: 0.71144
+        Precision: nan Recall: 2.78010 F1: nan FB: nan 
+Epoch:  40
+0.78
+Test || Loss:0.00664 Acc: 0.69592
+        Precision: 3.02045 Recall: 3.17461 F1: 3.09561 FB: 3.14253 
+Epoch:  41
+0.7847580645161291
+Test || Loss:0.00723 Acc: 0.70589
+        Precision: 3.06425 Recall: 3.03821 F1: 3.05118 FB: 3.04339 
+Epoch:  42
+0.7834274193548387
+Test || Loss:0.00872 Acc: 0.67412
+        Precision: nan Recall: 2.93130 F1: nan FB: nan 
+Epoch:  43
+0.7886693548387097
+Test || Loss:0.00769 Acc: 0.69980
+        Precision: 2.90250 Recall: 2.86654 F1: 2.88441 FB: 2.87366 
+Epoch:  44
+0.7806451612903226
+Test || Loss:0.00881 Acc: 0.65343
+        Precision: 2.88503 Recall: 2.84318 F1: 2.86395 FB: 2.85145 
+Epoch:  45
+0.785241935483871
+Test || Loss:0.00859 Acc: 0.72418
+        Precision: 2.92135 Recall: 3.37322 F1: 3.13107 FB: 3.27200 
+Epoch:  46
+0.7819758064516129
+Test || Loss:0.00902 Acc: 0.68650
+        Precision: 2.90839 Recall: 3.11564 F1: 3.00845 FB: 3.07186 
+Epoch:  47
+0.7875
+Test || Loss:0.00846 Acc: 0.66821
+        Precision: 2.91390 Recall: 2.97045 F1: 2.94190 FB: 2.95897 
+Epoch:  48
+0.7828225806451613
+Test || Loss:0.00775 Acc: 0.72511
+        Precision: nan Recall: 3.04371 F1: nan FB: nan 
+Epoch:  49
+0.7842741935483871
+Test || Loss:0.00893 Acc: 0.71772
+        Precision: 2.77038 Recall: 3.13995 F1: 2.94361 FB: 3.05835 
+Best Fb: 3.272002711770342
+Finish training
+TRAINING COMPLETE. TESTING NOW.
+device is -------------- cuda:0
+[[   0    1  409    0    0    0    0    0]
+ [   9    0   52    1    1    0    0  160]
+ [   6    0 1894   25    2    0   49   10]
+ [   0    0    0    0    0    0    0  286]
+ [   0    0   23    0  114    0    0   29]
+ [   0    0    0    0   17    0    0   78]
+ [  10    0    0    0    0    1  122    5]
+ [   0    0  179   44   27   69    0 1790]]
+0.724182523554406
+              precision    recall  f1-score   support
+
+         AFb       0.00      0.00      0.00       410
+         AFt       0.00      0.00      0.00       223
+          SR       0.74      0.95      0.83      1986
+         SVT       0.00      0.00      0.00       286
+         VFb       0.71      0.69      0.70       166
+         VFt       0.00      0.00      0.00        95
+         VPD       0.71      0.88      0.79       138
+          VT       0.76      0.85      0.80      2109
+
+    accuracy                           0.72      5413
+   macro avg       0.37      0.42      0.39      5413
+weighted avg       0.61      0.72      0.66      5413
+
+
+acc: 0.0,
+precision: 0.0,
+sensitivity: 0.0,
+FP_rate: 1.0,
+PPV: 0.0,
+NPV: 0.0
+F1_score: nan 
+Fbeta_score: nan
+----------------------------------------------------------------
+        Layer (type)               Output Shape         Param #
+================================================================
+            Conv2d-1            [-1, 2, 623, 1]              14
+              ReLU-2            [-1, 2, 623, 1]               0
+       BatchNorm2d-3            [-1, 2, 623, 1]               4
+            Conv2d-4            [-1, 3, 310, 1]              33
+              ReLU-5            [-1, 3, 310, 1]               0
+       BatchNorm2d-6            [-1, 3, 310, 1]               6
+            Conv2d-7            [-1, 5, 154, 1]              65
+              ReLU-8            [-1, 5, 154, 1]               0
+       BatchNorm2d-9            [-1, 5, 154, 1]              10
+           Conv2d-10            [-1, 10, 76, 1]             210
+             ReLU-11            [-1, 10, 76, 1]               0
+      BatchNorm2d-12            [-1, 10, 76, 1]              20
+           Conv2d-13            [-1, 10, 37, 1]             410
+             ReLU-14            [-1, 10, 37, 1]               0
+      BatchNorm2d-15            [-1, 10, 37, 1]              20
+           Linear-16                    [-1, 8]           2,968
+================================================================
+Total params: 3,760
+Trainable params: 3,760
+Non-trainable params: 0
+----------------------------------------------------------------
+Input size (MB): 0.00
+Forward/backward pass size (MB): 0.09
+Params size (MB): 0.01
+Estimated Total Size (MB): 0.11
+----------------------------------------------------------------

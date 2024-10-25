@@ -5,7 +5,7 @@ import torch
 from torch.utils.data import DataLoader
 import torchvision.transforms as transforms
 from help_code_demo import *
-from sklearn.metrics import confusion_matrix
+from sklearn.metrics import confusion_matrix, accuracy_score, classification_report # latter two added by PD
 from models.model_1 import *
 
 
@@ -49,22 +49,41 @@ def main():
             true_label.append(labels_test.detach().cpu().numpy())
             pred_label.append(predicted_test.detach().cpu().numpy())   
 
+    target_names = ['AFb', 'AFt', 'SR', 'SVT', 'VFb', 'VFt', 'VPD', 'VT']
     C = confusion_matrix(true_label, pred_label)
     print(C)
 
+    skl_acc = accuracy_score(np.array(true_label), np.array(pred_label), normalize=True)
+
+    skl_report = classification_report(np.array(true_label), np.array(pred_label), labels=list(range(8)), target_names=target_names)
+
+    print(skl_acc)
+    print(skl_report)
+    acc = np.diag(C).sum() / C.sum()
+    true_pos = np.diag(C)
+    false_pos = np.sum(C, axis=0) - true_pos
+    false_neg = np.sum(C, axis=1) - true_pos
+    precision = np.sum(true_pos / (true_pos + false_pos))
+    recall = np.sum(true_pos / (true_pos + false_neg))
+    f1_score = (2 * precision * recall) / (precision + recall)
+    fb_score = (1+2**2) * (precision * recall) / ((2**2)*precision + recall)
+           
+    """
     acc = (C[0][0] + C[1][1]) / (C[0][0] + C[0][1] + C[1][0] + C[1][1])
     precision = C[1][1] / (C[1][1] + C[0][1])
     sensitivity = C[1][1] / (C[1][1] + C[1][0])
     FP_rate = C[0][1] / (C[0][1] + C[0][0])
     PPV = C[1][1] / (C[1][1] + C[1][0])
     NPV = C[0][0] / (C[0][0] + C[0][1])
+    
+    
 
     F1_score = (2 * precision * sensitivity) / (precision + sensitivity)
     F_beta_score = (1+2**2) * (precision * sensitivity) / ((2**2)*precision + sensitivity)
 
     print("\nacc: {},\nprecision: {},\nsensitivity: {},\nFP_rate: {},\nPPV: {},\nNPV: {}".format(acc, precision, sensitivity, FP_rate, PPV, NPV))
     print(f"F1_score: {F1_score} \nFbeta_score: {F_beta_score}")
-
+    """
     # # ----------------------------
     from torchsummary import summary
     summary(net, input_size=(1, 1250, 1))
