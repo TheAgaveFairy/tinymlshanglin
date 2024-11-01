@@ -1,2 +1,5 @@
 **/__pycache__
 *.zip
+ModelDesign/fft_data
+/fft_data
+IEGM_*.pkl

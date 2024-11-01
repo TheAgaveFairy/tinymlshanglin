@@ -138,12 +138,14 @@ def loadCSV(csvf):
     return dictLabels
 
 
-def txt_to_numpy(filename, row):
+def txt_to_numpy(filename, size):
     file = open(filename)
     lines = file.readlines()
-    datamat = np.arange(row, dtype=float) #PD edit - was np.float for dtype which was deprecated
+    datamat = np.zeros(size, dtype=float) #PD edit - was np.float for dtype which was deprecated. changed from arange to zeros
     row_count = 0
     for line in lines:
+        if row_count == size: # needed to add this
+            break 
         line = line.strip().split(' ')
         datamat[row_count] = line[0]
         row_count += 1

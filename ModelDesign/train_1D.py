@@ -78,8 +78,8 @@ def main():
                             mode='test',
                             size=SIZE)
 
-    trainloader = DataLoader(trainset, batch_size=BATCH_SIZE, shuffle=True, num_workers=8)      #upped number of workers to 8 from 4
-    testloader = DataLoader(testset, batch_size=BATCH_SIZE_TEST, shuffle=True, num_workers=8)   #upped number of workers to 8 from 4
+    trainloader = DataLoader(trainset, batch_size=BATCH_SIZE, shuffle=True, num_workers=4)      #upped number of workers to 8 from 4
+    testloader = DataLoader(testset, batch_size=BATCH_SIZE_TEST, shuffle=True, num_workers=4)   #upped number of workers to 8 from 4
 
     print("Training Dataset loading finish.")
 
@@ -151,7 +151,7 @@ def main():
         fb_score = (1+2**2) * (precision * recall) / ((2**2)*precision + recall)
         
 
-        target_names = ['AFb', 'AFt', 'SR', 'SVT', 'VFb', 'VFt', 'VPD', 'VT']
+        #target_names = ['AFb', 'AFt', 'SR', 'SVT', 'VFb', 'VFt', 'VPD', 'VT']
         skl_acc = accuracy_score(np.array(true_label), np.array(pred_label), normalize=True)
         print("Epoch: ", epoch)
         print(skl_acc)        

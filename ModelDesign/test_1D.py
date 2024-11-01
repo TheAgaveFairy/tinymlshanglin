@@ -49,7 +49,8 @@ def main():
             true_label.append(labels_test.detach().cpu().numpy())
             pred_label.append(predicted_test.detach().cpu().numpy())   
 
-    target_names = ['AFb', 'AFt', 'SR', 'SVT', 'VFb', 'VFt', 'VPD', 'VT']
+    #target_names = ['AFb', 'AFt', 'SR', 'SVT', 'VFb', 'VFt', 'VPD', 'VT']
+    target_names = args.labels.split(',')
     C = confusion_matrix(true_label, pred_label)
     print(C)
 
@@ -86,7 +87,7 @@ def main():
     """
     # # ----------------------------
     from torchsummary import summary
-    summary(net, input_size=(1, 1250, 1))
+    summary(net, input_size=(1, args.size, 1))
     # # --------------------------------
 
 
@@ -99,6 +100,7 @@ if __name__ == '__main__':
     argparser.add_argument('--net_name', type=str, default='IEGM_net.pkl')
     argparser.add_argument('--path_indices', type=str, default='./data_indices/')
     argparser.add_argument('--batch_size', '-b', metavar='B', type=int, default=1, help='Batch size')
+    argparser.add_argument('--labels', type=str, default='Healthy,Dying')
 
     args = argparser.parse_args()
 
