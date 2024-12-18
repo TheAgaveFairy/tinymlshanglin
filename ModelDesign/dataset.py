@@ -29,12 +29,14 @@ def loadCSV(csvf):
     return dictLabels
 
 
-def txt_to_numpy(filename, row):
+def txt_to_numpy(filename, size):
     file = open(filename)
     lines = file.readlines()
-    datamat = np.arange(row, dtype=float) #PD edit - was np.float for dtype which was deprecated
+    datamat = np.zeros(size, dtype=float) #PD edit - was np.float for dtype which was deprecated also arange isn't ideal
     row_count = 0
     for line in lines:
+        if row_count == size:
+            break
         line = line.strip().split(' ')
         datamat[row_count] = line[0]
         row_count += 1
@@ -52,12 +54,12 @@ def scaling(X, sigma=0.1):
     return X * myNoise
 
 def verflip(sig):
-    return sig[::-1, :]
+    return np.flip(sig) # rewritten, [::-1] did nothing
 
 def shift(sig):
     for col in range(sig.shape[1]):
         # offset = np.random.choice(range(-interval, interval))
-        offset = random.gauss(0, 1)
+        offset = random.gauss(0, 0.05) # original range was 0,1 !!!
         sig[:, col] += offset
     return sig
 
@@ -76,6 +78,25 @@ def transform(sig, mode='test'):
     sig = torch.tensor(sig.copy(), dtype=torch.float)
 
     return sig
+
+def selectWindow(sig, length=500):
+    # Claude 3.5 Sonnet
+    sig_1d = sig.squeeze()
+    original_length = sig_1d.shape[0]
+        
+    # Ensure length doesn't exceed signal
+    if length > original_length: # adding this to be certain
+        print("Length issue in dataset.py selectWindow().")
+        return sig
+    length = min(length, original_length)
+        
+    # Random start index
+    rand_start = random.randint(0, original_length - length)
+    
+    # Extract window
+    windowed_sig_1d = sig_1d[rand_start:rand_start + length]
+    # Reshape back to original 2D shape
+    return windowed_sig_1d.reshape(1, length, 1)
 
 
 class IEGMDataset_tfm():
@@ -99,8 +120,8 @@ class IEGMDataset_tfm():
         if not os.path.isfile(text_path):
             print(text_path + 'does not exist')
             return None
-
         IEGM_seg = txt_to_numpy(text_path, self.size).reshape(1, self.size, 1)
+        # IEGM_seg = selectWindow(IEGM_seg)  I NEED A BETTER WAY TO DO THIS
         IEGM_seg = transform(IEGM_seg, self.mode)
 
         label = int(self.names_list[idx].split(' ')[1])

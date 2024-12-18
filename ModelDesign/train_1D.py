@@ -32,22 +32,40 @@ def main():
     path_indices = args.path_indices
     # seed = 2222 # 0.960
     seed = 8888
+    NUM_CLASSES = len(args.labels.split(','))
 
     random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
 
     # Instantiating NN
-    net = IEGMNetSimple5a()
+    print("ASDFASDF",SIZE,args.size)
+    if SIZE == 200:
+        net = IEGMNetSimple5a200()
+    elif args.size == 500:
+        net = IEGMNetSimple5a500()
+    elif args.size == 100:
+        net = IEGMNetSimple5a100()
+    elif args.size == 50:
+        net = IEGMNetSimple5a50()
+    elif args.size == 250:
+        net = IEGMNetSimple5a250() 
+    else: # need to handle case where we want Multi classification model (IEGMNetSimple5aMulti)
+        if NUM_CLASSES == 8:
+            net = IEGMNetSimple5aMulti()
+        elif NUM_CLASSES == 6:
+            net = IEGMNetSimple5aMultiMinor()
+        else:
+            net = IEGMNetSimple5a()
     net = net.float()#.to(device) #now setting up for multi GPU, see next code block
     
     if use_cuda and torch.cuda.device_count() > 1 and False: # no need, it's not any faster. not shocked.
         print("Using",str(torch.cuda.device_count()),"GPUs")
         net = nn.DataParallel(net)
+    
     net.to(device)
-
-
     print(net)
+
     for name, W in net.named_parameters():
         print(name, W.shape)
 
@@ -68,7 +86,7 @@ def main():
                             size=SIZE,
                             transform=transforms.Compose([ToTensor()])
                             )
-    elif args.dataset == "ecg":
+    elif args.dataset == "ecg": ## DEFAULT CASE
         trainset = IEGMDataset_tfm(root_dir=path_data,
                                 indice_dir=path_indices,
                                 mode='train',
@@ -124,7 +142,6 @@ def main():
 
             optimizer.zero_grad()
             outputs = net(inputs)
-            
             loss = criterion(outputs, labels)
             _, predicted = torch.max(outputs.data, 1)
 
@@ -154,7 +171,7 @@ def main():
         #target_names = ['AFb', 'AFt', 'SR', 'SVT', 'VFb', 'VFt', 'VPD', 'VT']
         skl_acc = accuracy_score(np.array(true_label), np.array(pred_label), normalize=True)
         print("Epoch: ", epoch)
-        print(skl_acc)        
+        print(skl_acc)      # acc == skl_acc, that's good, ha.   
 
         if has_wandb and args.enable_wandb and False: # turn this off
             wandb.log({"train/acc": acc.item()})
@@ -237,7 +254,7 @@ def main():
         test_recall_lst.append(test_recall.item())
 
         ### save best model
-        if test_fb_score >= max_test_fb:
+        if test_fb_score >= max_test_fb or NUM_CLASSES > 2:
             max_test_fb = max(max_test_fb, test_fb_score)
             torch.save(net, f'./saved_models/IEGM_net{args.ext}.pkl')
             torch.save(net.state_dict(), f'./saved_models/IEGM_net_state_dict{args.ext}.pkl')
@@ -304,7 +321,8 @@ if __name__ == '__main__':
     parser.add_argument('--path_indices', type=str, default='./data_indices/')
     parser.add_argument('--ext', type=str, default='', help='save extension')
     parser.add_argument('--enable-wandb', action='store_true', default=False,
-                            help='whether to use wandb to log')
+                                                    help='whether to use wandb to log')
+    parser.add_argument('--labels', type=str, default='Healthy,Dying')
     args = parser.parse_args()
 
     if has_wandb and args.enable_wandb:

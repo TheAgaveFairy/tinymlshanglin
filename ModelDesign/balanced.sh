@@ -1,7 +1,6 @@
 ### train
 
-python3 train_1D.py  --lr 0.01 --loss ce --batchsz 256 --ext _balanced --path_indices ./balanced_indices/
-
+python3 train_1D.py  --lr 0.01 --loss ce --batchsz 256 --ext _balanced --path_indices ./balanced_indices/ --labels AFb,AFt,SR,SVT,VFb,VFt,VPD,VT
 echo "TRAINING COMPLETE. TESTING NOW."
 
 ### test

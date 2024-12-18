@@ -1,11 +1,8 @@
 ### train
-
-python3 train_1D.py  --lr 0.01 --batchsz 256 --ext _newidx --path_indices ./multi_indices_new/ --loss ce
-
-echo "TRAINING COMPLETE. TESTING NOW."
+python3 train_1D.py -a simple5a --epoch 50 --lr 0.01 --loss f1 --batchsz 256 --ext _og
 
 ### test
-python3 test_1D.py --net_name saved_models/IEGM_net_newidx.pkl -b 1 --path_indices ./multi_indices_new/ --labels AFb,AFt,SR,SVT,VFb,VFt,VPD,VT
+python3 test_1D.py --net_name saved_models/IEGM_net_og.pkl -b 1
 
 ### convert 
-#python3 pt2onnx.py IEGM_net_Sf1bz256lr0.01
+# python3 pt2onnx.py IEGM_net_Sf1bz256lr0.01
